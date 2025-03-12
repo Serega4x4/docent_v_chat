@@ -3,8 +3,8 @@
 !public/
 !.gitignore
 !banned_words.txt
-!censorship_responses.txt
-!greeting_responses.txt
+!banned_responses.txt
 !greetings.txt
-!keyword_responses.txt
+!greeting_responses.txt
 !keywords.txt
+!keyword_responses.txt
