@@ -6,13 +6,9 @@ use App\Http\Controllers\CensorshipController;
 use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
 use Telegram\Bot\Api;
-use Illuminate\Support\Facades\Log;
-
 
 Route::post('/telegram/webhook', function (Request $request) {
     $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
-
-    Log::info('Incoming webhook data:', $request->all());
 
     $censorshipController = app(CensorshipController::class);
     $greetingController = app(GreetingController::class);

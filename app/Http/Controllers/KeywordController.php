@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 
 class KeywordController extends Controller

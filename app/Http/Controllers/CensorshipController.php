@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Telegram\Bot\Api;
 
 class CensorshipController extends Controller
@@ -23,6 +22,7 @@ class CensorshipController extends Controller
             return []; // Если файла нет, возвращаем пустой массив
         }
 
+        // Массив слов в нижнем регистре
         $words = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         return array_map(fn($word) => mb_strtolower(trim($word), 'UTF-8'), $words);
@@ -44,10 +44,20 @@ class CensorshipController extends Controller
     private function containsBannedWords($message)
     {
         $bannedWords = $this->loadBannedWords();
+
+        if (empty($bannedWords)) return false;
+
         $message = mb_strtolower($message, 'UTF-8');
 
-        foreach ($bannedWords as $bannedWord) {
-            if (strpos($message, $bannedWord) !== false) {
+        // Очищаем от пунктуации, оставляем только слова
+        $cleanMessage = preg_replace('/[^\p{L}\p{N}\s]/u', '', $message);
+
+        // Разбиваем на отдельные слова
+        $words = preg_split('/\s+/', $cleanMessage, -1, PREG_SPLIT_NO_EMPTY);
+
+        // Сравниваем каждое слово с бан-листом
+        foreach ($words as $word) {
+            if (in_array($word, $bannedWords, true)) {
                 return true;
             }
         }
@@ -62,14 +72,11 @@ class CensorshipController extends Controller
 
             $responses = $this->loadCensorshipResponses();
 
-            if (empty($responses)) {
-                $response = 'Выражайтесь культурнее!'; // fallback
-            } else {
-                // Выбираем случайный ответ из массива
-                $response = $responses[array_rand($responses)];
-            }
+            $response = empty($responses)
+                ? 'Выражайтесь культурнее!'
+                : $responses[array_rand($responses)];
 
-            // Отправляем сообщение в чат
+            // Отправляем ответ в чат
             $this->telegram->sendMessage([
                 'chat_id' => $chat_id,
                 'text' => $response,
