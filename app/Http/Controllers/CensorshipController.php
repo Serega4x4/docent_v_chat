@@ -31,7 +31,7 @@ class CensorshipController extends Controller
     // Загружаем список ответов на нарушение цензуры
     private function loadCensorshipResponses()
     {
-        $filePath = storage_path('app/censorship_responses.txt');
+        $filePath = storage_path('app/banned_responses.txt');
 
         if (!file_exists($filePath)) {
             return ['Выражайтесь культурнее!']; // Ответ по умолчанию
