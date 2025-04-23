@@ -36,6 +36,8 @@ class WikiController extends Controller
     private function searchWikipedia($keyword)
     {
         try {
+            $keyword = mb_convert_case(mb_substr($keyword, 0, 1), MB_CASE_TITLE, "UTF-8") . mb_substr($keyword, 1);
+            
             $formattedKeyword = str_replace(' ', '_', $keyword);
 
             $response = Http::get('https://ru.wikipedia.org/api/rest_v1/page/summary/' . urlencode($formattedKeyword));
