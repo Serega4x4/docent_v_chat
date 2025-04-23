@@ -11,9 +11,10 @@ class WeatherController extends Controller
     private array $cities = [
         'Красноярск' => 'Krasnoyarsk',
         'Омск' => 'Omsk',
-        'Мегион (ХМАО)' => 'Megion',
+        'Мегион (Высокоград)' => 'Megion',
         'Ченстохова' => 'Czestochowa',
-        'Штутгард' => 'Stuttgart',
+        'Штутгарт' => 'Stuttgart',
+        'Нижний Новгород' => 'Nizhny Novgorod',
     ];
 
     public function __construct(Api $telegram)
