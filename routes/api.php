@@ -7,6 +7,7 @@ use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\MoneyController;
 use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\WikiController;
 use Telegram\Bot\Api;
 
 Route::post('/telegram/webhook', function (Request $request) {
@@ -17,6 +18,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $keywordController = app(KeywordController::class);
     $moneyController = app(MoneyController::class);
     $weatherController = app(WeatherController::class);
+    $wikiController = app(WikiController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -43,6 +45,11 @@ Route::post('/telegram/webhook', function (Request $request) {
         // Обработка команды "погода"
         if ($weatherController->handle($chat_id, $message_text, $message_id)) {
             return response()->json(['status' => 'weather']);
+        }
+
+        // Обработка команды "что такое"
+        if ($wikiController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'wiki']);
         }
         
         // Обработка ключевых слов
