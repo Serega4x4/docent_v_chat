@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CensorshipController;
 use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\MoneyController;
 use Telegram\Bot\Api;
 
 Route::post('/telegram/webhook', function (Request $request) {
@@ -13,6 +14,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $censorshipController = app(CensorshipController::class);
     $greetingController = app(GreetingController::class);
     $keywordController = app(KeywordController::class);
+    $moneyController = app(MoneyController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -31,6 +33,11 @@ Route::post('/telegram/webhook', function (Request $request) {
             return response()->json(['status' => 'greeted']);
         }
 
+        // Обработка валюты
+        if ($moneyController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'money']);
+        }
+        
         // Обработка ключевых слов
         $keywordController->handle($chat_id, $message_text, $message_id);
     }
