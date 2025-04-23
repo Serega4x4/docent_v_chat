@@ -36,12 +36,14 @@ class WikiController extends Controller
     private function searchWikipedia($keyword)
     {
         try {
-            $response = Http::get('https://ru.wikipedia.org/api/rest_v1/page/summary/' . urlencode($keyword));
+            $formattedKeyword = str_replace(' ', '_', $keyword);
+
+            $response = Http::get('https://ru.wikipedia.org/api/rest_v1/page/summary/' . urlencode($formattedKeyword));
 
             if ($response->ok() && isset($response->json()['extract'])) {
                 return $response->json()['extract'];
             } else {
-                return "Делов не знаю, отвечаю \"$keyword\".";
+                return "Делов не знаю, отвечаю что такое \"$keyword\".";
             }
         } catch (\Exception $e) {
             return "Что то я подзабыл совсем, спроси позже, обожди.";
