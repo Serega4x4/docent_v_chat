@@ -41,10 +41,10 @@ class WikiController extends Controller
             if ($response->ok() && isset($response->json()['extract'])) {
                 return $response->json()['extract'];
             } else {
-                return "❗ Не удалось найти информацию о \"$keyword\".";
+                return "Делов не знаю, отвечаю \"$keyword\".";
             }
         } catch (\Exception $e) {
-            return "❗ Произошла ошибка при запросе к Википедии.";
+            return "Что то я подзабыл совсем, спроси позже, обожди.";
         }
     }
 }

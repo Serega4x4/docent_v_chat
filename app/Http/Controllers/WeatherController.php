@@ -40,11 +40,11 @@ class WeatherController extends Controller
                 if ($response->successful()) {
                     $data = $response->json();
                     $temp = $data['main']['temp'] ?? null;
-                    $description = $data['weather'][0]['description'] ?? 'нет данных';
+                    $description = $data['weather'][0]['description'] ?? 'Так ты определись';
 
                     $weatherInfo[] = "🏙 *{$label}*: {$temp}°C, {$description}";
                 } else {
-                    $weatherInfo[] = "🏙 *{$label}*: ошибка получения данных.";
+                    $weatherInfo[] = "🏙 *{$label}*: Что то не то.";
                 }
             }
 

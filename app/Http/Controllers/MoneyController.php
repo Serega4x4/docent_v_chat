@@ -13,7 +13,7 @@ class MoneyController extends Controller
     {
         $this->telegram = $telegram;
     }
-    
+
     public function handle($chat_id, $message_text, $message_id)
     {
         if (trim(mb_strtolower($message_text)) === 'валюта') {
@@ -27,7 +27,7 @@ class MoneyController extends Controller
                 $pln = $data['Valute']['PLN']['Value'] ?? null;
 
                 if ($usd && $eur && $pln) {
-                    $text = "📈 *Курсы валют на сегодня:*\n\n";
+                    $text = "📈 *По баблу у нас сегодня:*\n\n";
                     $text .= "🇺🇸 *Доллар США:* {$usd} руб.\n";
                     $text .= "🇪🇺 *Евро:* {$eur} руб.\n";
                     $text .= "🇵🇱 *Польский злотый:* {$pln} руб.";
@@ -35,15 +35,15 @@ class MoneyController extends Controller
                     $this->telegram->sendMessage([
                         'chat_id' => $chat_id,
                         'text' => $text,
-                        'parse_mode' => 'Markdown', // для красивого форматирования
+                        'parse_mode' => 'Markdown',
                         'reply_to_message_id' => $message_id,
                     ]);
 
-                    return true; // найдено и обработано
+                    return true;
                 } else {
                     $this->telegram->sendMessage([
                         'chat_id' => $chat_id,
-                        'text' => 'Не удалось получить курсы валют.',
+                        'text' => 'Пока мне одна утка не донесла по капусте что к чему.',
                         'reply_to_message_id' => $message_id,
                     ]);
                     return true;
@@ -51,13 +51,13 @@ class MoneyController extends Controller
             } else {
                 $this->telegram->sendMessage([
                     'chat_id' => $chat_id,
-                    'text' => 'Ошибка подключения к API ЦБ РФ.',
+                    'text' => 'Облава! Менты спалили что мы баблом ворочаем.',
                     'reply_to_message_id' => $message_id,
                 ]);
                 return true;
             }
         }
 
-        return false; // не "валюта", идем дальше
+        return false;
     }
 }
