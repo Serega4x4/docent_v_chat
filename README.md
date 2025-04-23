@@ -16,6 +16,7 @@ This repository hosts a Telegram bot developed using **Laravel 12.1.1** and **PH
 -   **Telegram SDK**: telegram/telegram-bot-sdk
 -   **Containerization**: Docker, Docker Compose
 -   **Web Server**: Nginx (via Docker)
+-   **API`s**: Wikipedia, Openweathermap, Central Bank of Russia
 
 ---
 
@@ -37,3 +38,4 @@ This repository hosts a Telegram bot developed using **Laravel 12.1.1** and **PH
 -   **SDK Телеграм**: telegram/telegram-bot-sdk
 -   **Контейнеризация**: Docker, Docker Compose
 -   **Веб-сервер**: Nginx (через Docker)
+-   **API`s**: Wikipedia, Openweathermap, Центральный Банк России (ЦБ РФ)
