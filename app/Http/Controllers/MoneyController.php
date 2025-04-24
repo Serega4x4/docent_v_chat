@@ -16,7 +16,7 @@ class MoneyController extends Controller
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        if (trim(mb_strtolower($message_text)) === 'валюта') {
+        if (str_contains(mb_strtolower($message_text), 'валюта')) {
             $response = Http::get('https://www.cbr-xml-daily.ru/daily_json.js');
 
             if ($response->successful()) {
@@ -27,7 +27,7 @@ class MoneyController extends Controller
                 $pln = $data['Valute']['PLN']['Value'] ?? null;
 
                 if ($usd && $eur && $pln) {
-                    $text = "📈 *По баблу у нас сегодня:*\n\n";
+                    $text = "📈 *Короче, по баблу у нас сегодня:*\n\n";
                     $text .= "🇺🇸 *Доллар США:* {$usd} руб.\n";
                     $text .= "🇪🇺 *Евро:* {$eur} руб.\n";
                     $text .= "🇵🇱 *Польский злотый:* {$pln} руб.";

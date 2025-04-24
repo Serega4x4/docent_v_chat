@@ -8,6 +8,8 @@ use Telegram\Bot\Api;
 class WeatherController extends Controller
 {
     protected $telegram;
+
+    // указываем требуемые города для вывода погоды 
     private array $cities = [
         'Красноярск' => 'Krasnoyarsk',
         'Омск' => 'Omsk',
@@ -24,7 +26,7 @@ class WeatherController extends Controller
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        if (trim(mb_strtolower($message_text)) === 'погода') {
+        if (str_contains(mb_strtolower($message_text), 'погода')) {
             $apiKey = env('OPENWEATHER_API_KEY');
 
             $weatherInfo = [];
@@ -42,13 +44,13 @@ class WeatherController extends Controller
                     $temp = $data['main']['temp'] ?? null;
                     $description = $data['weather'][0]['description'] ?? 'Так ты определись';
 
-                    $weatherInfo[] = "🏙 *{$label}*: {$temp}°C, {$description}";
+                    $weatherInfo[] = "*{$label}*: {$temp}°C, {$description}";
                 } else {
-                    $weatherInfo[] = "🏙 *{$label}*: Что то не то.";
+                    $weatherInfo[] = "*{$label}*: Что то не то.";
                 }
             }
 
-            $text = "🌦 *Погода в городах:*\n\n" . implode("\n", $weatherInfo);
+            $text = "*Ну чё, по погоде у нас сегодня:*\n\n" . implode("\n", $weatherInfo);
 
             $this->telegram->sendMessage([
                 'chat_id' => $chat_id,

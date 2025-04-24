@@ -45,7 +45,7 @@ class WikiController extends Controller
             if ($response->ok() && isset($response->json()['extract'])) {
                 return $response->json()['extract'];
             } else {
-                return "Делов не знаю, отвечаю что такое \"$keyword\".";
+                return "Отвечаю, делов не знаю что такое \"$keyword\".";
             }
         } catch (\Exception $e) {
             return "Что то я подзабыл совсем, спроси позже, обожди.";
