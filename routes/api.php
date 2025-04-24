@@ -58,3 +58,7 @@ Route::post('/telegram/webhook', function (Request $request) {
 
     return response()->json(['status' => 'ok']);
 });
+
+Route::get('/ping', function () {
+    return response('OK', 200);
+});
