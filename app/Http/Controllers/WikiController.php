@@ -16,7 +16,7 @@ class WikiController extends Controller
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        if (preg_match('/^что такое (.+)/iu', $message_text, $matches)) {
+        if (preg_match('/что такое\s+(.+)/iu', $message_text, $matches)) {
             $keyword = trim($matches[1]);
 
             $summary = $this->searchWikipedia($keyword);
