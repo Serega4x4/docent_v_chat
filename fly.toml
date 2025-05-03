@@ -1,8 +1,3 @@
-# fly.toml app configuration file generated for docent-ded on 2025-03-11T12:43:32+01:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
 app = 'docent-ded'
 primary_region = 'waw'
 console_command = 'php /var/www/html/artisan tinker'
@@ -17,19 +12,25 @@ console_command = 'php /var/www/html/artisan tinker'
   LOG_CHANNEL = 'stderr'
   LOG_LEVEL = 'info'
   APP_URL = "https://docent-ded.fly.dev"
-  LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
+  LOG_STDERR_FORMATTER = 'Monolog\\Formatter\\JsonFormatter'
   SESSION_DRIVER = 'cookie'
   SESSION_SECURE_COOKIE = 'true'
 
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = false
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
   cpus = 1
+
+
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+
