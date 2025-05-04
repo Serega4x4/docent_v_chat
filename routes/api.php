@@ -22,7 +22,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $weatherController = app(WeatherController::class);
     $wikiController = app(WikiController::class);
     $deleteController = app(DeleteController::class);
-    $chanelDeleteController = app(ChanelDeleteController::class);
+    // $chanelDeleteController = app(ChanelDeleteController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -32,9 +32,9 @@ Route::post('/telegram/webhook', function (Request $request) {
         $message_id = $update['message']['message_id'];
 
         // удаление пересланных из нежелательных каналов
-        if ($chanelDeleteController->handle($chat_id, $update['message'])) {
-            return response()->json(['status' => 'channel_forward_deleted']);
-        }
+        // if ($chanelDeleteController->handle($chat_id, $update['message'])) {
+        //     return response()->json(['status' => 'channel_forward_deleted']);
+        // }
 
         // Проверка на цензуру
         if ($censorshipController->handle($chat_id, $message_text, $message_id)) {
