@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CensorshipController;
+use App\Http\Controllers\ChanelDeleteController;
+use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\MoneyController;
@@ -19,6 +21,8 @@ Route::post('/telegram/webhook', function (Request $request) {
     $moneyController = app(MoneyController::class);
     $weatherController = app(WeatherController::class);
     $wikiController = app(WikiController::class);
+    $deleteController = app(DeleteController::class);
+    $chanelDeleteController = app(ChanelDeleteController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -26,6 +30,11 @@ Route::post('/telegram/webhook', function (Request $request) {
         $chat_id = $update['message']['chat']['id'];
         $message_text = $update['message']['text'];
         $message_id = $update['message']['message_id'];
+
+        // удаление пересланных из нежелательных каналов
+        if ($chanelDeleteController->handle($chat_id, $update['message'])) {
+            return response()->json(['status' => 'channel_forward_deleted']);
+        }
 
         // Проверка на цензуру
         if ($censorshipController->handle($chat_id, $message_text, $message_id)) {
@@ -51,7 +60,11 @@ Route::post('/telegram/webhook', function (Request $request) {
         if ($wikiController->handle($chat_id, $message_text, $message_id)) {
             return response()->json(['status' => 'wiki']);
         }
-        
+
+        if ($deleteController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'deleted']);
+        }
+
         // Обработка ключевых слов
         $keywordController->handle($chat_id, $message_text, $message_id);
     }
