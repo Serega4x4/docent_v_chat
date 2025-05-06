@@ -16,13 +16,15 @@ class WeatherInCityController extends Controller
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        if (preg_match('/погода в\s+(.+)/iu', $message_text, $matches)) {
+        if (preg_match('/погода в\s+(.+)/iu', mb_strtolower($message_text), $matches)) {
             $city = trim($matches[1]);
+
+            $cityFormatted = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
 
             $apiKey = env('OPENWEATHER_API_KEY');
 
             $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
-                'q' => $city,
+                'q' => $cityFormatted,
                 'appid' => $apiKey,
                 'units' => 'metric',
                 'lang' => 'ru',
@@ -33,9 +35,9 @@ class WeatherInCityController extends Controller
                 $temp = $data['main']['temp'] ?? 'неизвестно';
                 $description = $data['weather'][0]['description'] ?? 'нет описания';
 
-                $text = "*Погода в {$city}:* {$temp}°C, {$description}";
+                $text = "*Погода в городе {$cityFormatted}:* {$temp}°C, {$description}";
             } else {
-                $text = "Чё то не могу найти градусник в *{$city}*. Походу попутал название";
+                $text = "Чёт не могу найти градусник в городе *{$cityFormatted}*. Походу ты попутал или напиши город в именительном падеже";
             }
 
             $this->telegram->sendMessage([
