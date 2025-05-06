@@ -10,19 +10,16 @@ use App\Http\Controllers\MoneyController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
-use Telegram\Bot\Api;
 
 Route::post('/telegram/webhook', function (Request $request) {
-    $telegram = new Api(env('TELEGRAM_BOT_TOKEN'));
-
     $censorshipController = app(CensorshipController::class);
     $greetingController = app(GreetingController::class);
-    $keywordController = app(KeywordController::class);
     $moneyController = app(MoneyController::class);
+    $weatherInCityController = app(WeatherInCityController::class);
     $weatherController = app(WeatherController::class);
     $wikiController = app(WikiController::class);
     $deleteController = app(DeleteController::class);
-    $weatherInCityController = app(WeatherInCityController::class);
+    $keywordController = app(KeywordController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -67,7 +64,9 @@ Route::post('/telegram/webhook', function (Request $request) {
         }
 
         // Обработка ключевых слов
-        $keywordController->handle($chat_id, $message_text, $message_id);
+        if ($keywordController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'key_word']);
+        }
     }
 
     return response()->json(['status' => 'ok']);
