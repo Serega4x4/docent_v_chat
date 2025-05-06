@@ -13,7 +13,7 @@ class WeatherController extends Controller
     private array $cities = [
         'Красноярск' => 'Krasnoyarsk',
         'Омск' => 'Omsk',
-        'Мегион (Высокоград)' => 'Megion',
+        'Высокий' => 'Megion',
         'Ченстохова' => 'Czestochowa',
         'Штутгарт' => 'Stuttgart',
         'Нижний Новгород' => 'Nizhny Novgorod',

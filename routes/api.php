@@ -3,12 +3,12 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CensorshipController;
-use App\Http\Controllers\ChanelDeleteController;
 use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\MoneyController;
 use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 use Telegram\Bot\Api;
 
@@ -22,7 +22,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $weatherController = app(WeatherController::class);
     $wikiController = app(WikiController::class);
     $deleteController = app(DeleteController::class);
-    // $chanelDeleteController = app(ChanelDeleteController::class);
+    $weatherInCityController = app(WeatherInCityController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -30,11 +30,6 @@ Route::post('/telegram/webhook', function (Request $request) {
         $chat_id = $update['message']['chat']['id'];
         $message_text = $update['message']['text'];
         $message_id = $update['message']['message_id'];
-
-        // удаление пересланных из нежелательных каналов
-        // if ($chanelDeleteController->handle($chat_id, $update['message'])) {
-        //     return response()->json(['status' => 'channel_forward_deleted']);
-        // }
 
         // Проверка на цензуру
         if ($censorshipController->handle($chat_id, $message_text, $message_id)) {
@@ -51,16 +46,22 @@ Route::post('/telegram/webhook', function (Request $request) {
             return response()->json(['status' => 'money']);
         }
 
+        // Обработка команды "погода в <название города в именительном падеже>"
+        if ($weatherInCityController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'weather_in_city']);
+        }
+
         // Обработка команды "погода"
         if ($weatherController->handle($chat_id, $message_text, $message_id)) {
             return response()->json(['status' => 'weather']);
         }
 
-        // Обработка команды "что такое"
+        // Обработка команды "что такое <сам вопрос для википедии>"
         if ($wikiController->handle($chat_id, $message_text, $message_id)) {
             return response()->json(['status' => 'wiki']);
         }
 
+        // удаление сообщений с ключевых слов
         if ($deleteController->handle($chat_id, $message_text, $message_id)) {
             return response()->json(['status' => 'deleted']);
         }
