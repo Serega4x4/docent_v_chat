@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
@@ -35,4 +34,7 @@ return [
         ],
     ],
 
+    'telegram' => [
+        'chat_id' => env('TELEGRAM_CHAT_ID'),
+    ],
 ];
