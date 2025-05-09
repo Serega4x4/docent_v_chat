@@ -11,7 +11,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 // Погода и курс валют
-Schedule::command('telegram:daily-report')->dailyAt('20:00')->timezone('Asia/Krasnoyarsk');
+Schedule::command('telegram:daily-report')->dailyAt('05:59')->timezone('Asia/Krasnoyarsk');
 
 // Приветствия в чат
 Schedule::command('telegram:daily-hello Asia/Krasnoyarsk')
