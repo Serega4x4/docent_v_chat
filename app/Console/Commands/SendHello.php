@@ -8,7 +8,7 @@ use Telegram\Bot\Api;
 class SendHello extends Command
 {
     protected $signature = 'telegram:daily-hello {timezone}';
-    protected $description = 'Отправить приветствие по часовому поясу в общий чат';
+    protected $description = 'Отправить приветствие по часовому поясу в конкретный чат';
 
     protected Api $telegram;
 
@@ -24,7 +24,7 @@ class SendHello extends Command
         $chatId = config('services.telegram.chat_id');
 
         $greetings = [
-            'Asia/Krasnoyarsk'     => 'Сережа, здравствуй. Вставай, доброе утро',
+            'Asia/Krasnoyarsk'     => 'Шуматкечын ямле, Сергей. Илышым куанен шупшылаш жап эртен.',
             'Asia/Omsk'            => '@Bessovestnotalantlivi, сәлам! Яңа үрләр яуларга вакыт.',
             'Asia/Yekaterinburg'   => 'Salam aleykum, @KenanHM! Nətərsən?',
             'Europe/Warsaw'        => '@Tamagochi4x4, здравствуйте... В Ваше отсутствие всё было в порядке!',
