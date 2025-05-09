@@ -10,6 +10,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Schedule::command('telegram:send-daily-weather')
-    ->dailyAt('07:00')
+Schedule::command('telegram:daily-report')
+    ->dailyAt('06:00')
     ->timezone('Asia/Krasnoyarsk');
