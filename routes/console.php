@@ -10,8 +10,12 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
+//////////////////////////////////
+
 // Погода и курс валют
 Schedule::command('telegram:daily-report')->dailyAt('05:59')->timezone('Asia/Krasnoyarsk');
+
+//////////////////////////////////
 
 // Приветствия в чат
 Schedule::command('telegram:daily-hello Asia/Krasnoyarsk')
@@ -34,3 +38,25 @@ Schedule::command('telegram:daily-hello Europe/Berlin')
     ->dailyAt('06:00')
     ->timezone('Europe/Berlin');
 
+//////////////////////////////////
+
+// Поздравления с днём рождения
+Schedule::command("telegram:happy-birthday Asia/Krasnoyarsk")
+    ->dailyAt('06:00')
+    ->timezone('Asia/Krasnoyarsk');
+
+Schedule::command("telegram:happy-birthday Asia/Omsk")
+    ->dailyAt('06:00')
+    ->timezone('Asia/Omsk');
+
+Schedule::command("telegram:happy-birthday Asia/Yekaterinburg")
+    ->dailyAt('06:00')
+    ->timezone('Asia/Yekaterinburg');
+
+Schedule::command("telegram:happy-birthday Europe/Warsaw")
+    ->dailyAt('06:00')
+    ->timezone('Europe/Warsaw');
+
+Schedule::command("telegram:happy-birthday Europe/Berlin")
+    ->dailyAt('06:00')
+    ->timezone('Europe/Berlin');
