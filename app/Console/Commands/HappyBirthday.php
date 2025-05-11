@@ -27,10 +27,10 @@ class HappyBirthday extends Command
         // Список Дней Рождения
         $birthdays = [
             'Asia/Krasnoyarsk' => '12-21',
-            'Asia/Omsk' => '05-08',
+            'Asia/Omsk' => '08-05',
             'Asia/Yekaterinburg' => '10-18',
             'Europe/Warsaw' => '07-10',
-            'Europe/Berlin' => '11-04',
+            'Europe/Berlin' => '04-11',
         ];
 
         // Получаем текущую дату в нужной таймзоне
