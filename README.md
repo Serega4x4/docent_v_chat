@@ -34,6 +34,7 @@ fly deploy
 fly secrets set TELEGRAM_BOT_TOKEN=your_token
 fly secrets set OPENWEATHER_API_KEY=your_key
 fly secrets set PING_SECRET=your_ping_secret
+fly secrets set TELEGRAM_CHAT_ID=-100chat_id
 ```
 
 ---
@@ -74,4 +75,5 @@ fly deploy
 fly secrets set TELEGRAM_BOT_TOKEN=your_token
 fly secrets set OPENWEATHER_API_KEY=your_key
 fly secrets set PING_SECRET=your_ping_secret
+fly secrets set TELEGRAM_CHAT_ID=-100chat_id
 ```  
