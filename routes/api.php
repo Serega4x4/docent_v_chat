@@ -19,7 +19,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $weatherInCityController = app(WeatherInCityController::class);
     $weatherController = app(WeatherController::class);
     $wikiController = app(WikiController::class);
-    $deleteController = app(DeleteController::class);
+    // $deleteController = app(DeleteController::class);
     $keywordController = app(KeywordController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
@@ -60,9 +60,9 @@ Route::post('/telegram/webhook', function (Request $request) {
         }
 
         // удаление сообщений с ключевых слов
-        if ($deleteController->handle($chat_id, $message_text, $message_id)) {
-            return response()->json(['status' => 'deleted']);
-        }
+        // if ($deleteController->handle($chat_id, $message_text, $message_id)) {
+        //     return response()->json(['status' => 'deleted']);
+        // }
 
         // Обработка ключевых слов
         if ($keywordController->handle($chat_id, $message_text, $message_id)) {
