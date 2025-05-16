@@ -31,6 +31,11 @@ Schedule::command('telegram:daily-hello')
         ->dailyAt('06:00')
         ->timezone('Asia/Krasnoyarsk');
 
+// Предложение в пятницу
+Schedule::command('telegram:friday')
+        ->dailyAt('17:00')
+        ->timezone('Asia/Krasnoyarsk');
+
 // Регистрация задач для приветствий и поздравлений с днём рождения
 foreach ($timezones as $timezone) {
     // Приветствия в чат
