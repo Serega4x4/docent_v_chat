@@ -26,12 +26,17 @@ Schedule::command('telegram:daily-report')
     ->dailyAt('05:59')
     ->timezone('Asia/Krasnoyarsk');
 
+// Приветствия в чат без временных зон
+Schedule::command('telegram:daily-hello')
+        ->dailyAt('06:00')
+        ->timezone('Asia/Krasnoyarsk');
+
 // Регистрация задач для приветствий и поздравлений с днём рождения
 foreach ($timezones as $timezone) {
     // Приветствия в чат
-    Schedule::command("telegram:daily-hello {$timezone}")
-        ->dailyAt('06:00')
-        ->timezone($timezone);
+    // Schedule::command("telegram:daily-hello {$timezone}")
+    //     ->dailyAt('06:00')
+    //     ->timezone('Asia/Krasnoyarsk');
 
     // Поздравления с днём рождения
     Schedule::command("telegram:happy-birthday {$timezone}")

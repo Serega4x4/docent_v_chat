@@ -8,9 +8,9 @@ This repository hosts a Telegram bot built with **Laravel 12.1.1** and **PHP 8.3
 - **Greeting Recognition**: Replies to simple greetings (e.g., "hello").
 - **Currency Info**: Returns current currency rates from the Central Bank of Russia.
 - **Weather Reports**:
-  - General weather request (`"weather"`)
-  - Weather by city (e.g., `"weather in Moscow"`)
-- **Wikipedia Search**: Replies with summaries from Wikipedia (e.g., `"what is Laravel"`).
+  - General weather request (`"погода"`)
+  - Weather by city (e.g., `"погода в Moscow"`)
+- **Wikipedia Search**: Replies with summaries from Wikipedia (e.g., `"что такое Laravel"`).
 - **Keyword-Based Deletion**: Deletes messages containing certain critical keywords.
 - **Keyword Responses**: Responds to specific keywords with pre-defined replies.
 
@@ -50,7 +50,7 @@ fly secrets set TELEGRAM_CHAT_ID=-100chat_id
 -   **Валюта**: Выводит актуальные курсы валют с сайта ЦБ РФ.
 -   **Погода**:
   - Общий запрос погоды (`"погода"`)
-  - Погода в указанном городе (например, `"погода в Москве"`)
+  - Погода в указанном городе (например, `"погода в Москва"`)
 -   **Википедия**: Даёт краткое описание по запросу (например, `"что такое Laravel"`).
 -   **Удаление сообщений**: Удаляет сообщения, содержащие определённые ключевые слова.
 -   **Ответы по ключевым словам**: Отвечает заранее заданными фразами на ключевые слова.
