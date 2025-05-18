@@ -22,14 +22,21 @@ class SendHello extends Command
     public function handle(): void
     {
         // общее приветствие
-        $chatId = config('services.telegram.chat_id');
+        $chatIds = config('services.telegram.chat_id');
 
-        $message = 'Приветствую, Родня! Как спалось? Как настроение?';  // если только одно приветствие
+        $message = 'Приветствую, Родня! Как спалось? Как настроение?'; // если только одно приветствие
 
-        $this->telegram->sendMessage([
-            'chat_id' => $chatId,
-            'text' => $message,
-        ]);
+        foreach ($chatIds as $chatId) {
+            try {
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => $message,
+                ]);
+                $this->info("Сообщение отправлено в чат: $chatId");
+            } catch (\Exception $e) {
+                $this->error("Ошибка при отправке в $chatId: " . $e->getMessage());
+            }
+        }
 
         $this->info("Отправлено сообщение: $message");
 
@@ -38,7 +45,6 @@ class SendHello extends Command
         // для отдельных временных зон
         // $timezone = $this->argument('timezone');
         // $chatId = config('services.telegram.chat_id');
-
 
         // $greetings = [
         //     // 'Asia/Krasnoyarsk'     => 'Шуматкечын ямле, @Andriyanich85. Илышым куанен шупшылаш жап эртен. (Доброе утро, Сергей. Пора наслаждаться жизнью)',
