@@ -7,6 +7,7 @@ use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\MoneyController;
+use App\Http\Controllers\StickerController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
@@ -21,6 +22,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $wikiController = app(WikiController::class);
     // $deleteController = app(DeleteController::class);
     $keywordController = app(KeywordController::class);
+    $stickerController = app(StickerController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
@@ -63,6 +65,11 @@ Route::post('/telegram/webhook', function (Request $request) {
         // if ($deleteController->handle($chat_id, $message_text, $message_id)) {
         //     return response()->json(['status' => 'deleted']);
         // }
+
+        // Обработка ключевых слов и ответ стикером
+        if ($stickerController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'sticker']);
+        }
 
         // Обработка ключевых слов
         if ($keywordController->handle($chat_id, $message_text, $message_id)) {
