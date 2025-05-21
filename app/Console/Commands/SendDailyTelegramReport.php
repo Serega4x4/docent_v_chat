@@ -22,17 +22,29 @@ class SendDailyTelegramReport extends Command
 
     public function handle(): void
     {
-        $chatId = config('services.telegram.chat_id');
+        $chatIds = config('services.telegram.chat_id');
 
-
-        // Погода
         $weatherController = new WeatherController($this->telegram);
-        $weatherController->handle($chatId, 'погода', null);
-
-        sleep(2); // чтобы Telegram не заблокировал из-за флуда
-
-        // Валюта
         $moneyController = new MoneyController($this->telegram);
-        $moneyController->handle($chatId, 'валюта', null);
+
+        foreach ($chatIds as $chatId) {
+            // try {
+            //     $this->telegram->sendMessage([
+            //         'chat_id' => $chatId,
+            //         'text' => $message,
+            //     ]);
+            //     $this->info("Сообщение отправлено в чат: $chatId");
+            // } catch (\Exception $e) {
+            //     $this->error("Ошибка при отправке в $chatId: " . $e->getMessage());
+            // }
+
+            // Погода
+            $weatherController->handle($chatId, 'погода', null);
+
+            sleep(2); // чтобы Telegram не заблокировал из-за флуда
+
+            // Валюта
+            $moneyController->handle($chatId, 'валюта', null);
+        }
     }
 }
