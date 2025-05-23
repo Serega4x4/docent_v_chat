@@ -6,11 +6,13 @@ COPY . .
 
 RUN composer install --optimize-autoloader --no-dev
 
-RUN chown -R www-data:www-data /var/www \
+RUN mkdir -p /var/www/storage/logs \
+    && chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/storage \
     && chmod -R 755 /var/www/bootstrap/cache
 
-RUN php artisan config:cache \
+RUN php artisan config:clear \
+    && php artisan config:cache \
     && php artisan route:cache
 
 ENV SKIP_COMPOSER 1
@@ -24,5 +26,8 @@ ENV APP_DEBUG false
 ENV LOG_CHANNEL stderr
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
+
+# Увеличиваем pm.max_children для PHP-FPM
+RUN echo "[www]\npm.max_children = 10" >> /etc/php/8.3/fpm/pool.d/www.conf
 
 CMD ["/start.sh"]
