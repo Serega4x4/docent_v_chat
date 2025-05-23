@@ -12,8 +12,11 @@ use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 
-Route::post('/telegram/webhook', function (Request $request) {
+Route::get('/', function (Request $request) {
+    return response()->json(['status' => 'ok']);
+});
 
+Route::post('/telegram/webhook', function (Request $request) {
     $censorshipController = app(CensorshipController::class);
     $greetingController = app(GreetingController::class);
     $moneyController = app(MoneyController::class);
