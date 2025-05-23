@@ -3,6 +3,8 @@ FROM richarvey/nginx-php-fpm:3.1.6
 WORKDIR /var/www
 
 COPY . .
+COPY routes/api.php /var/www/routes/api.php
+COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/nginx-site.conf
 
 RUN composer install --optimize-autoloader --no-dev
 
@@ -16,8 +18,6 @@ RUN php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:clear \
     && php artisan route:list > /var/www/storage/logs/routes.log
-
-COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/nginx-site.conf
 
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/public
