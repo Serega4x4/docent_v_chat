@@ -15,7 +15,6 @@ RUN mkdir -p /var/www/storage/logs \
 RUN php artisan config:clear \
     && php artisan config:cache \
     && php artisan route:clear \
-    && php artisan route:cache \
     && php artisan route:list > /var/www/storage/logs/routes.log
 
 ENV SKIP_COMPOSER 1

@@ -13,14 +13,19 @@ use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 
 Route::get('/', function (Request $request) {
+    \Illuminate\Support\Facades\Log::info('Root route accessed');
     return response()->json(['status' => 'ok']);
 });
 
 Route::get('/api', function (Request $request) {
-    return response()->json(['status' => 'API is running try']);
+    \Illuminate\Support\Facades\Log::info('API route accessed');
+    return response()->json(['status' => 'API is running']);
 });
 
 Route::post('/telegram/webhook', function (Request $request) {
+
+    \Illuminate\Support\Facades\Log::info('Telegram webhook accessed', $request->all());
+    
     $censorshipController = app(CensorshipController::class);
     $greetingController = app(GreetingController::class);
     $moneyController = app(MoneyController::class);
