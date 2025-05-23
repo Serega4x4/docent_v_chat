@@ -11,8 +11,7 @@ RUN chown -R www-data:www-data /var/www \
     && chmod -R 755 /var/www/bootstrap/cache
 
 RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+    && php artisan route:cache
 
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/public
