@@ -12,9 +12,13 @@ use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 
-Route::get('/', function (Request $request) {
-    return response()->json(['status' => 'ok']);
-});
+// Route::get('/', function (Request $request) {
+//     return response()->json(['status' => 'ok']);
+// });
+
+// Route::get('/api', function (Request $request) {
+//     return response()->json(['status' => 'API is running']);
+// });
 
 Route::post('/telegram/webhook', function (Request $request) {
     $censorshipController = app(CensorshipController::class);
