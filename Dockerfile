@@ -27,7 +27,4 @@ ENV LOG_CHANNEL stderr
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-# Увеличиваем pm.max_children для PHP-FPM
-RUN echo "[www]\npm.max_children = 10" >> /etc/php/8.3/fpm/pool.d/www.conf
-
 CMD ["/start.sh"]
