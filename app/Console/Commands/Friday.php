@@ -27,14 +27,20 @@ class Friday extends Command
             return;
         }
 
-        $chatId = config('services.telegram.chat_id');
-
+        $chatIds = config('services.telegram.chat_id');
         $message = 'Ох, ПЯТНИЦА! Хорошо! За это можно и по рюмашечке!';
 
-        $this->telegram->sendMessage([
-            'chat_id' => $chatId,
-            'text' => $message,
-        ]);
+        foreach ($chatIds as $chatId) {
+            try {
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => $message,
+                ]);
+                $this->info("Сообщение отправлено в чат: $chatId");
+            } catch (\Exception $e) {
+                $this->error("Ошибка при отправке в $chatId: " . $e->getMessage());
+            }
+        }
 
         $this->info("Отправлено сообщение: $message");
     }
