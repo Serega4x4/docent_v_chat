@@ -17,6 +17,8 @@ RUN php artisan config:clear \
     && php artisan route:clear \
     && php artisan route:list > /var/www/storage/logs/routes.log
 
+COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/nginx-site.conf
+
 ENV SKIP_COMPOSER 1
 ENV WEBROOT /var/www/public
 ENV PHP_ERRORS_STDERR 1
