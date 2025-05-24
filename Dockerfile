@@ -28,6 +28,6 @@ WORKDIR /var/www/html
 RUN composer install --optimize-autoloader --no-dev
 
 # Запускаем оптимизацию Laravel
-RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
+RUN php artisan config:cache && php artisan route:cache
 
 EXPOSE 80
