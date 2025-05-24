@@ -1,34 +1,33 @@
-FROM richarvey/nginx-php-fpm:3.1.6
+# Используем официальный образ PHP с Apache
+FROM php:8.2-apache
 
-WORKDIR /var/www
+# Устанавливаем системные зависимости
+RUN apt-get update && apt-get install -y \
+    git unzip zip curl libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip gd
 
-COPY . .
-COPY routes/api.php /var/www/routes/api.php
-COPY conf/nginx/nginx-site.conf /etc/nginx/conf.d/nginx-site.conf
+# Установка Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Копируем Laravel-проект
+COPY . /var/www/html
+
+# Настройка прав доступа
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Включаем mod_rewrite
+RUN a2enmod rewrite
+
+# Настраиваем Apache
+COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
+
+WORKDIR /var/www/html
+
+# Установка зависимостей Laravel
 RUN composer install --optimize-autoloader --no-dev
 
-RUN mkdir -p /var/www/storage/logs \
-    && touch /var/www/storage/logs/laravel.log \
-    && chown -R www-data:www-data /var/www \
-    && chmod -R 775 /var/www/storage \
-    && chmod -R 775 /var/www/bootstrap/cache
+# Запускаем оптимизацию Laravel
+RUN php artisan config:cache && php artisan route:cache && php artisan view:cache
 
-RUN php artisan config:clear \
-    && php artisan config:cache \
-    && php artisan route:clear \
-    && php artisan route:list > /var/www/storage/logs/routes.log
-
-ENV SKIP_COMPOSER 1
-ENV WEBROOT /var/www/public
-ENV PHP_ERRORS_STDERR 1
-ENV RUN_SCRIPTS 1
-ENV REAL_IP_HEADER 1
-
-ENV APP_ENV production
-ENV APP_DEBUG false
-ENV LOG_CHANNEL stderr
-
-ENV COMPOSER_ALLOW_SUPERUSER 1
-
-CMD ["/start.sh"]
+EXPOSE 80
