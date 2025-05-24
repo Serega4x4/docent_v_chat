@@ -12,11 +12,6 @@ use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 
-Route::get('/up', function (Request $request) {
-    \Illuminate\Support\Facades\Log::info('Root route accessed');
-    return response()->json(['status' => 'ok']);
-});
-
 Route::post('/telegram/webhook', function (Request $request) {
 
     \Illuminate\Support\Facades\Log::info('Telegram webhook accessed', $request->all());
