@@ -17,11 +17,6 @@ Route::get('/up', function (Request $request) {
     return response()->json(['status' => 'ok']);
 });
 
-Route::get('/api', function (Request $request) {
-    \Illuminate\Support\Facades\Log::info('API route accessed');
-    return response()->json(['status' => 'API is running']);
-});
-
 Route::post('/telegram/webhook', function (Request $request) {
 
     \Illuminate\Support\Facades\Log::info('Telegram webhook accessed', $request->all());
