@@ -35,6 +35,6 @@ return [
     ],
 
     'telegram' => [
-        'chat_id' => explode(',', env('TELEGRAM_CHAT_ID')),
+        'chat_id' => array_filter(explode(',', env('TELEGRAM_CHAT_ID', ''))),
     ],
 ];

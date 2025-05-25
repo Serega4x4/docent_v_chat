@@ -11,6 +11,7 @@ use App\Http\Controllers\StickerController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
+use Illuminate\Support\Facades\Artisan;
 
 Route::post('/telegram/webhook', function (Request $request) {
 
@@ -91,4 +92,9 @@ Route::get('/ping', function (Request $request) {
     $ip = $request->header('X-Forwarded-For') ?? $request->ip();
 
     return response("Ping OK from $ip", 200);
+});
+
+Route::get('/run-artisan/{cmd}', function ($cmd) {
+    Artisan::call($cmd);
+    return 'Done: ' . $cmd;
 });
