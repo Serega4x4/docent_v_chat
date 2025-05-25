@@ -9,7 +9,7 @@ use Telegram\Bot\Api;
 
 class SendDailyTelegramReport extends Command
 {
-    protected $signature = 'telegram:daily-report';
+    protected $signature = 'telegram:daily-report';  // название команды
     protected $description = 'Отправить ежедневный отчет по погоде и валютам в Telegram';
 
     protected Api $telegram;

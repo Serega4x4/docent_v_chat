@@ -8,8 +8,8 @@ use Carbon\Carbon;
 
 class Friday extends Command
 {
-    protected $signature = 'telegram:friday'; // название команды
-    protected $description = 'Отправить наставления в пятницу в конкретный чат';
+    protected $signature = 'telegram:sunday';  // название команды
+    protected $description = 'Отправить предупреждение о предстоящем понедельнике в конкретный чат';
 
     protected Api $telegram;
 
@@ -22,13 +22,13 @@ class Friday extends Command
     public function handle(): void
     {
         //  проверка на пятницу
-        if (Carbon::now('Asia/Krasnoyarsk')->dayOfWeek !== Carbon::FRIDAY) {
+        if (Carbon::now('Asia/Krasnoyarsk')->dayOfWeek !== Carbon::SUNDAY) {
             $this->info('Сегодня не пятница — сообщение не отправлено.');
             return;
         }
 
         $chatIds = config('services.telegram.chat_id');
-        $message = 'Ох, ПЯТНИЦА! Хорошо! За это можно и по рюмашечке!';
+        $message = 'Мне очень жаль, но завтра понедельник!';
 
         foreach ($chatIds as $chatId) {
             try {

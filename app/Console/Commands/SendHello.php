@@ -8,7 +8,7 @@ use Telegram\Bot\Api;
 class SendHello extends Command
 {
     // protected $signature = 'telegram:daily-hello {timezone}';  // для отдельных временных зон
-    protected $signature = 'telegram:daily-hello'; // общее приветствие
+    protected $signature = 'telegram:daily-hello'; // название команды
     protected $description = 'Отправить приветствие по часовому поясу в конкретный чат';
 
     protected Api $telegram;

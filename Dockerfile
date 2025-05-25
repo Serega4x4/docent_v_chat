@@ -17,7 +17,6 @@ COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
 WORKDIR /var/www/html
 RUN composer install --optimize-autoloader --no-dev
 
-# НЕ кэшируем config на build-фазе!
 RUN php artisan route:cache
 
 EXPOSE 80

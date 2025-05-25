@@ -8,7 +8,7 @@ use Telegram\Bot\Api;
 
 class HappyBirthday extends Command
 {
-    protected $signature = 'telegram:happy-birthday {timezone}';
+    protected $signature = 'telegram:happy-birthday {timezone}';  // название команды
     protected $description = 'Отправить поздравления с днем рождения в определенный чат по часовому поясу';
 
     protected Api $telegram;
