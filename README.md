@@ -27,16 +27,6 @@ This repository hosts a Telegram bot built with **Laravel 12.1.1** and **PHP 8.3
   - Central Bank of Russia (CBR)
 - **Health Check**: via [cron-job.org](https://cron-job.org) using `/api/ping`
 
-## 🚀 Deployment (Fly.io)
-
-```bash
-fly deploy
-fly secrets set TELEGRAM_BOT_TOKEN=your_token
-fly secrets set OPENWEATHER_API_KEY=your_key
-fly secrets set PING_SECRET=your_ping_secret
-fly secrets set TELEGRAM_CHAT_ID=-100chat_id
-```
-
 ---
 
 # Телеграм-бот для модерации, погоды, Википедии и ключевых ответов  
@@ -67,13 +57,3 @@ fly secrets set TELEGRAM_CHAT_ID=-100chat_id
   - OpenWeatherMap
   - Центральный банк РФ
 -   **Проверка доступности**: через cron-job.org по `/api/ping` 
-
-## 🚀 Развёртывание (Fly.io)
-
-```bash
-fly deploy
-fly secrets set TELEGRAM_BOT_TOKEN=your_token
-fly secrets set OPENWEATHER_API_KEY=your_key
-fly secrets set PING_SECRET=your_ping_secret
-fly secrets set TELEGRAM_CHAT_ID=-100chat_id
-```  
