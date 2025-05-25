@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Telegram\Bot\Api;
 use Carbon\Carbon;
 
-class Friday extends Command
+class Sunday extends Command
 {
     protected $signature = 'telegram:sunday';  // название команды
     protected $description = 'Отправить предупреждение о предстоящем понедельнике в конкретный чат';
