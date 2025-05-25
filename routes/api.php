@@ -80,11 +80,6 @@ Route::post('/telegram/webhook', function (Request $request) {
     return response()->json(['status' => 'ok']);
 });
 
-Route::get('/run-artisan/{cmd}', function ($cmd) {
-    Artisan::call($cmd);
-    return 'Done: ' . $cmd;
-});
-
 Route::get('/run-scheduler', function (Request $request) {
     $token = $request->query('token');
 

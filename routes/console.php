@@ -38,7 +38,7 @@ Schedule::command('telegram:friday')
 
 // в воскресенье о понедельние
 Schedule::command('telegram:sunday')
-        ->dailyAt('19:43')
+        ->dailyAt('18:00')
         ->timezone('Asia/Krasnoyarsk');
 
 // Регистрация задач для приветствий и поздравлений с днём рождения
