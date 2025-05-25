@@ -14,7 +14,6 @@ use App\Http\Controllers\WikiController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::post('/telegram/webhook', function (Request $request) {
-
     $censorshipController = app(CensorshipController::class);
     $greetingController = app(GreetingController::class);
     $moneyController = app(MoneyController::class);
@@ -81,20 +80,19 @@ Route::post('/telegram/webhook', function (Request $request) {
     return response()->json(['status' => 'ok']);
 });
 
-Route::get('/ping', function (Request $request) {
-    $token = $request->query('token');
-    $expected = env('PING_SECRET');
-
-    if ($token !== $expected) {
-        abort(403, 'Access denied');
-    }
-
-    $ip = $request->header('X-Forwarded-For') ?? $request->ip();
-
-    return response("Ping OK from $ip", 200);
-});
-
 Route::get('/run-artisan/{cmd}', function ($cmd) {
     Artisan::call($cmd);
     return 'Done: ' . $cmd;
+});
+
+Route::get('/run-scheduler', function (Request $request) {
+    $token = $request->query('token');
+
+    if ($token !== env('PING_SECRET')) {
+        abort(403, 'Access denied');
+    }
+
+    Artisan::call('schedule:run');
+
+    return response('Scheduler executed');
 });
