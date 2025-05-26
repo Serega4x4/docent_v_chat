@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Telegram\Bot\Api;
 
-class WeatherController extends Controller
+class WeatherController extends BaseController
 {
     protected $telegram;
 
@@ -26,42 +26,6 @@ class WeatherController extends Controller
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        if (str_contains(mb_strtolower($message_text), 'погода')) {
-            $apiKey = config('services.telegram.open_weather');
-
-            $weatherInfo = [];
-
-            foreach ($this->cities as $label => $city) {
-                $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
-                    'q' => $city,
-                    'appid' => $apiKey,
-                    'units' => 'metric',
-                    'lang' => 'ru',
-                ]);
-
-                if ($response->successful()) {
-                    $data = $response->json();
-                    $temp = $data['main']['temp'] ?? null;
-                    $description = $data['weather'][0]['description'] ?? 'Так ты определись';
-
-                    $weatherInfo[] = "*{$label}*: {$temp}°C, {$description}";
-                } else {
-                    $weatherInfo[] = "*{$label}*: Что то не то.";
-                }
-            }
-
-            $text = "*Ну чё, по погоде у нас сегодня:*\n\n" . implode("\n", $weatherInfo);
-
-            $this->telegram->sendMessage([
-                'chat_id' => $chat_id,
-                'text' => $text,
-                'parse_mode' => 'Markdown',
-                'reply_to_message_id' => $message_id,
-            ]);
-
-            return true;
-        }
-
-        return false;
+        $service = $this->service->weather($chat_id, $message_text, $message_id, $this->cities);
     }
 }
