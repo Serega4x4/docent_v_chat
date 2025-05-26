@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services\Weather;
+namespace App\Service\Weather;
 
-use Telegram\Bot\Api;
 use Illuminate\Support\Facades\Http;
 
 class Service

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Services\Weather\Service;
+use App\Service\Weather\Service;
 
 class BaseController extends Controller
 {

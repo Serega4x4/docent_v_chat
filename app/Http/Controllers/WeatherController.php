@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Weather\Service;
+use App\Service\Weather\Service;
 use Telegram\Bot\Api;
 
 class WeatherController extends BaseController
