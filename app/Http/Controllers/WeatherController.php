@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Services\Weather\Service;
-use Illuminate\Support\Facades\Http;
 use Telegram\Bot\Api;
 
 class WeatherController extends BaseController
@@ -28,6 +27,8 @@ class WeatherController extends BaseController
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        $service = $this->service->weather($chat_id, $message_text, $message_id, $this->cities);
+        $service = $this->service->weather($chat_id, $message_text, $message_id, $this->cities, $this->telegram);
+
+        return $service;
     }
 }

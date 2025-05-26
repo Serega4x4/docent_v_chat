@@ -7,14 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class Service
 {
-    protected $telegram;
-
-    public function __construct(Api $telegram)
-    {
-        $this->telegram = $telegram;
-    }
-
-    public function weather($chat_id, $message_text, $message_id, $cities)
+    public function weather($chat_id, $message_text, $message_id, $cities, $telegram)
     {
         if (str_contains(mb_strtolower($message_text), 'погода')) {
             $apiKey = config('services.telegram.open_weather');
@@ -42,7 +35,7 @@ class Service
 
             $text = "*Ну чё, по погоде у нас сегодня:*\n\n" . implode("\n", $weatherInfo);
 
-            $this->telegram->sendMessage([
+            $telegram->sendMessage([
                 'chat_id' => $chat_id,
                 'text' => $text,
                 'parse_mode' => 'Markdown',
