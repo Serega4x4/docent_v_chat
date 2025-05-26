@@ -8,7 +8,7 @@ use Telegram\Bot\Api;
 
 class HappyBirthday extends Command
 {
-    protected $signature = 'telegram:happy-birthday {timezone}';  // название команды
+    protected $signature = 'telegram:happy-birthday {timezone}'; // название команды
     protected $description = 'Отправить поздравления с днем рождения в определенный чат по часовому поясу';
 
     protected Api $telegram;
@@ -22,7 +22,7 @@ class HappyBirthday extends Command
     public function handle()
     {
         $timezone = $this->argument('timezone');
-        $chatId = config('services.telegram.chat_id');
+        $chatIds = config('services.telegram.chat_id');
 
         // Список Дней Рождения
         $birthdays = [
@@ -56,10 +56,17 @@ class HappyBirthday extends Command
 
         $message = $greetings[$timezone] ?? 'С днем рождения, Родня!';
 
-        $this->telegram->sendMessage([
-            'chat_id' => $chatId,
-            'text' => $message,
-        ]);
+        foreach ($chatIds as $chatId) {
+            try {
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => $message,
+                ]);
+                $this->info("Сообщение отправлено в чат: $chatId");
+            } catch (\Exception $e) {
+                $this->error("Ошибка при отправке в $chatId: " . $e->getMessage());
+            }
+        }
 
         $this->info("Отправлено сообщение для $timezone: $message");
         return self::SUCCESS;

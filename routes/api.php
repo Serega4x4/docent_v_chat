@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\CensorshipController;
-use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\GreetingController;
 use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\MoneyController;
@@ -11,7 +11,8 @@ use App\Http\Controllers\StickerController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
-use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\DeleteController;
+
 
 Route::post('/telegram/webhook', function (Request $request) {
     $censorshipController = app(CensorshipController::class);
@@ -22,7 +23,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $wikiController = app(WikiController::class);
     $keywordController = app(KeywordController::class);
     $stickerController = app(StickerController::class);
-    // // $deleteController = app(DeleteController::class);
+    // $deleteController = app(DeleteController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
