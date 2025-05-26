@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\MoneyController;
+use App\Service\Weather\Service;
 use Telegram\Bot\Api;
 
 class SendDailyTelegramReport extends Command
@@ -13,24 +14,25 @@ class SendDailyTelegramReport extends Command
     protected $description = 'Отправить ежедневный отчет по погоде и валютам в Telegram';
 
     private array $cities = [
-        'Красноярск' => 'Krasnoyarsk',
-        'Омск' => 'Omsk',
         'Высокий' => 'Megion',
+        'Омск' => 'Omsk',
+        'Красноярск' => 'Krasnoyarsk',
         'Ченстохова' => 'Czestochowa',
         'Штутгарт' => 'Stuttgart',
     ];
 
     private array $citiesParents = [
         'Высокий' => 'Megion',
-        'Ченстохова' => 'Czestochowa',
         'Нижний Новгород' => 'Nizhny Novgorod',
+        'Ченстохова' => 'Czestochowa',
     ];
 
-    private array $citiesCusisns = [
+    private array $citiesCousisns = [
         'Высокий' => 'Megion',
-        'Тюмень' => 'Czestochowa',
-        'Гютерсло' => 'Stuttgart',
-        'Нижние Серги' => 'Nizhny Novgorod',
+        'Тюмень' => 'Tyumen',
+        'Нижние Серги' => 'Nizhniye Sergi',
+        'Ченстохова' => 'Czestochowa',
+        'Гютерсло' => 'Gutersloh',
     ];
 
     protected Api $telegram;
@@ -45,17 +47,24 @@ class SendDailyTelegramReport extends Command
     {
         $chatIds = config('services.telegram.chat_id');
 
-        $weatherController = app(WeatherController::class);
-        $moneyController = app(MoneyController::class);
+        $chatCities = [
+            $chatIds[0] => $this->cities,
+            $chatIds[1] => $this->citiesParents,
+            $chatIds[2] => $this->citiesCousisns,
+        ];
+
+        $weather = app(Service::class);
+        $money = app(MoneyController::class);
 
         foreach ($chatIds as $chatId) {
             // Погода
-            $weatherController->handle($chatId, 'погода', null);
+            $cities = $chatCities[$chatId] ?? $this->cities;
+            $weather->weather($chatId, 'погода', null, $cities, $this->telegram);
 
             sleep(2);
 
             // Валюта
-            $moneyController->handle($chatId, 'валюта', null);
+            $money->handle($chatId, 'валюта', null);
         }
     }
 }
