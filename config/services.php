@@ -36,6 +36,6 @@ return [
 
     'telegram' => [
         'chat_id' => array_filter(explode(',', env('TELEGRAM_CHAT_ID', ''))),
-        'open_weather' => array_filter(explode(',', env('OPENWEATHER_API_KEY', ''))),
+        'open_weather' => env('OPENWEATHER_API_KEY'),
     ],
 ];
