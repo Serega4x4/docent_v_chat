@@ -9,7 +9,7 @@ use Telegram\Bot\Api;
 
 class SendDailyTelegramReport extends Command
 {
-    protected $signature = 'telegram:daily-report';  // название команды
+    protected $signature = 'telegram:daily-report'; // название команды
     protected $description = 'Отправить ежедневный отчет по погоде и валютам в Telegram';
 
     private array $cities = [
@@ -18,7 +18,6 @@ class SendDailyTelegramReport extends Command
         'Высокий' => 'Megion',
         'Ченстохова' => 'Czestochowa',
         'Штутгарт' => 'Stuttgart',
-        'Нижний Новгород' => 'Nizhny Novgorod',
     ];
 
     private array $citiesParents = [
@@ -46,8 +45,8 @@ class SendDailyTelegramReport extends Command
     {
         $chatIds = config('services.telegram.chat_id');
 
-        $weatherController = new WeatherController($this->telegram);
-        $moneyController = new MoneyController($this->telegram);
+        $weatherController = app(WeatherController::class);
+        $moneyController = app(MoneyController::class);
 
         foreach ($chatIds as $chatId) {
             // Погода
