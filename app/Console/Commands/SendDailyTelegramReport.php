@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\MoneyController;
 use App\Service\Weather\Service;
 use Telegram\Bot\Api;
