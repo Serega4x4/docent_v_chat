@@ -21,7 +21,7 @@ class WeatherInCityController extends Controller
 
             $cityFormatted = mb_convert_case($city, MB_CASE_TITLE, "UTF-8");
 
-            $apiKey = env('OPENWEATHER_API_KEY');
+            $apiKey = config('services.telegram.open_weather');
 
             $response = Http::get('https://api.openweathermap.org/data/2.5/weather', [
                 'q' => $cityFormatted,

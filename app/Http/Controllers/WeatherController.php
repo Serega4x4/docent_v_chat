@@ -27,7 +27,7 @@ class WeatherController extends Controller
     public function handle($chat_id, $message_text, $message_id)
     {
         if (str_contains(mb_strtolower($message_text), 'погода')) {
-            $apiKey = env('OPENWEATHER_API_KEY');
+            $apiKey = config('services.telegram.open_weather');
 
             $weatherInfo = [];
 
