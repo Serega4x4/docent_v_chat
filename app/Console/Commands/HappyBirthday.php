@@ -49,7 +49,7 @@ class HappyBirthday extends Command
             ],
             [
                 'name' => 'Создатель',
-                'date' => '07-10',
+                'date' => '05-27',
                 'timezone' => 'Europe/Warsaw',
                 'chat_id' => config('services.telegram.chat_id')[0],
                 'message' => 'Создатель, с днем рождения Вас. ',
