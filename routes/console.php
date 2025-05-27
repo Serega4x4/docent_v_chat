@@ -42,19 +42,14 @@ Schedule::command('telegram:sunday')
         ->timezone('Asia/Krasnoyarsk');
 
 // Регистрация задач для приветствий и поздравлений с днём рождения
-// foreach ($timezones as $timezone) {
-//     Приветствия в чат
-//     Schedule::command("telegram:daily-hello {$timezone}")
-//         ->dailyAt('06:00')
-//         ->timezone('Asia/Krasnoyarsk');
+foreach ($timezones as $timezone) {
+    // Приветствия в чат
+    // Schedule::command("telegram:daily-hello {$timezone}")
+    //     ->dailyAt('06:00')
+    //     ->timezone('Asia/Krasnoyarsk');
 
-//     Поздравления с днём рождения
-//     Schedule::command("telegram:happy-birthday {$timezone}")
-//         ->dailyAt('19:50')
-//         ->timezone($timezone);
-// }
-
-// Поздравления с днём рождения
-Schedule::command('telegram:happy-birthday')
-    ->dailyAt('20:15')
-    ->timezone('UTC');
+    // Поздравления с днём рождения
+    Schedule::command("telegram:happy-birthday {$timezone}")
+        ->dailyAt('20:24')
+        ->timezone($timezone);
+}

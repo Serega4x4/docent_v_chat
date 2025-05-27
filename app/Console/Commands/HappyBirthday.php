@@ -8,7 +8,7 @@ use Telegram\Bot\Api;
 
 class HappyBirthday extends Command
 {
-    protected $signature = 'telegram:happy-birthday'; // название команды
+    protected $signature = 'telegram:happy-birthday {timezone}'; // название команды
     protected $description = 'Отправить поздравления с днем рождения в определенный чат по часовому поясу';
 
     protected Api $telegram;
@@ -27,7 +27,7 @@ class HappyBirthday extends Command
         foreach ($birthdays as $birthday) {
             $now = Carbon::now($birthday['timezone'])->format('m-d');
 
-            if ($now === $birthday['date'] && !is_null($birthday['chat_id'])) {
+            if ($now === $birthday['date']) {
                 try {
                     $this->telegram->sendMessage([
                         'chat_id' => $birthday['chat_id'],
