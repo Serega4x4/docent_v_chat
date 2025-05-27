@@ -26,7 +26,7 @@ return [
         ],
         [
             'name' => 'Создатель',
-            'date' => '05-27',
+            'date' => '07-10',
             'timezone' => 'Europe/Warsaw',
             'chat_id' => $chatIds[0],
             'message' => 'Создатель, с днем рождения Вас. ',
