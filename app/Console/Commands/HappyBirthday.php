@@ -169,7 +169,7 @@ class HappyBirthday extends Command
         ];
 
         foreach ($birthdays as $birthday) {
-            $now = \Carbon\Carbon::now($birthday['timezone'])->format('m-d');
+            $now = Carbon::now($birthday['timezone'])->format('m-d');
 
             if ($now === $birthday['date']) {
                 try {
