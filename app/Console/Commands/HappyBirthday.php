@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use App\Services\BirthdayService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Telegram\Bot\Api;
