@@ -12,7 +12,7 @@ class SendDailyTelegramReport extends Command
     protected $signature = 'telegram:daily-report'; // название команды
     protected $description = 'Отправить ежедневный отчет по погоде и валютам в Telegram';
 
-    private array $cities = [
+    private array $citiesFriends = [
         'Высокий' => 'Megion',
         'Омск' => 'Omsk',
         'Красноярск' => 'Krasnoyarsk',
@@ -47,7 +47,7 @@ class SendDailyTelegramReport extends Command
         $chatIds = config('services.telegram.chat_id');
 
         $chatCities = [
-            $chatIds[0] => $this->cities,
+            $chatIds[0] => $this->citiesFriends,
             $chatIds[1] => $this->citiesParents,
             $chatIds[2] => $this->citiesCousisns,
         ];
@@ -57,7 +57,7 @@ class SendDailyTelegramReport extends Command
 
         foreach ($chatIds as $chatId) {
             // Погода
-            $cities = $chatCities[$chatId] ?? $this->cities;
+            $cities = $chatCities[$chatId] ?? $this->citiesFriends;
             $weather->weather($chatId, 'погода', null, $cities, $this->telegram);
 
             sleep(2);

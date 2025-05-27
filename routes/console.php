@@ -23,7 +23,7 @@ $timezones = [
 
 // Погода и курс валют
 Schedule::command('telegram:daily-report')
-    ->dailyAt('05:59')
+    ->dailyAt('07:00')
     ->timezone('Asia/Krasnoyarsk');
 
 // Приветствия в чат без временных зон
@@ -50,6 +50,6 @@ foreach ($timezones as $timezone) {
 
     // Поздравления с днём рождения
     Schedule::command("telegram:happy-birthday {$timezone}")
-        ->dailyAt('06:00')
+        ->dailyAt('08:00')
         ->timezone($timezone);
 }
