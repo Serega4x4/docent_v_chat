@@ -1,6 +1,6 @@
 <?php
 
-$chatIds = explode(',', env('TELEGRAM_CHAT_ID'));
+$chatIds = array_filter(explode(',', env('TELEGRAM_CHAT_ID', '')));
 
 return [
         [
