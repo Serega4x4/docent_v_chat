@@ -93,8 +93,8 @@ Route::get('/run-scheduler', function (Request $request) {
     return response('Scheduler executed');
 });
 
-
-Route::get('/run-artisan/{cmd}', function ($cmd) {
-    Artisan::call($cmd);
-    return 'Done: ' . $cmd;
-});
+    // проверка команд когда на бесплатном хостинге нет Schedule
+// Route::get('/run-artisan/{cmd}', function ($cmd) {
+//     Artisan::call($cmd);
+//     return 'Done: ' . $cmd;
+// });
