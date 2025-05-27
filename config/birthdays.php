@@ -1,6 +1,6 @@
 <?php
 
-$chatIds = array_values(array_filter(explode(',', env('TELEGRAM_CHAT_ID', ''))));
+$chatIds = config('services.telegram.chat_ids');
 
 return [
         [
