@@ -56,5 +56,5 @@ Schedule::command('telegram:sunday')
 
 // Поздравления с днём рождения
 Schedule::command('telegram:happy-birthday')
-    ->dailyAt('20:07')
+    ->dailyAt('20:15')
     ->timezone('UTC');
