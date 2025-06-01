@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Weather;
+namespace App\Service;
 
 use Illuminate\Support\Facades\Http;
 
