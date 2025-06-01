@@ -11,12 +11,36 @@ class WeatherController extends BaseController
 
     // указываем требуемые города для вывода погоды
     private array $cities = [
-        'Красноярск' => 'Krasnoyarsk',
-        'Омск' => 'Omsk',
+        'Москва' => 'Moscow',
+        'Кувай' => 'Kuwait City',
+        'Оймякон' => 'Oymyakon',
+        'Париж' => 'Paris',
+        'Рим' => 'Rome',
+        'Лондон' => 'London',
+        'Токио' => 'Tokyo',
+        'Пекин' => 'Beijing',
+    ];
+
+    private array $citiesFriends = [
         'Высокий' => 'Megion',
+        'Омск' => 'Omsk',
+        'Красноярск' => 'Krasnoyarsk',
         'Ченстохова' => 'Czestochowa',
         'Штутгарт' => 'Stuttgart',
+    ];
+
+    private array $citiesParents = [
+        'Высокий' => 'Megion',
         'Нижний Новгород' => 'Nizhny Novgorod',
+        'Ченстохова' => 'Czestochowa',
+    ];
+
+    private array $citiesCousisns = [
+        'Высокий' => 'Megion',
+        'Тюмень' => 'Tyumen',
+        'Нижние Серги' => 'Nizhniye Sergi',
+        'Ченстохова' => 'Czestochowa',
+        'Гютерсло' => 'Gutersloh',
     ];
 
     public function __construct(Service $service, Api $telegram)
@@ -27,8 +51,22 @@ class WeatherController extends BaseController
 
     public function handle($chat_id, $message_text, $message_id)
     {
-        $service = $this->service->weather($chat_id, $message_text, $message_id, $this->cities, $this->telegram);
+        $chatIdsFriend = config('services.telegram.chat_id_friend');
+        $chatIdsParent = config('services.telegram.chat_id_parents');
+        $chatIdsCousin = config('services.telegram.chat_id_cousins');
 
-        return $service;
+        $chatCities = [
+            $chatIdsFriend => $this->citiesFriends,
+            $chatIdsParent => $this->citiesParents,
+            $chatIdsCousin => $this->citiesCousisns,
+        ];
+
+        $cities = $chatCities[$chat_id] ?? $this->cities;
+
+        // $service = $this->service->weather($chat_id, $message_text, $message_id, $this->cities, $this->telegram);
+
+        return $this->service->weather($chat_id, $message_text, $message_id, $cities, $this->telegram);
+
+        // return $service
     }
 }

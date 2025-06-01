@@ -36,6 +36,9 @@ return [
 
     'telegram' => [
         'chat_id' => array_filter(explode(',', env('TELEGRAM_CHAT_ID', ''))),
+        'chat_id_friend' => env('TELEGRAM_CHAT_ID_FRIEND'),
+        'chat_id_parents' => env('TELEGRAM_CHAT_ID_PARENTS'),
+        'chat_id_cousins' => env('TELEGRAM_CHAT_ID_COUSISN'),
         'open_weather' => env('OPENWEATHER_API_KEY'),
     ],
 ];
