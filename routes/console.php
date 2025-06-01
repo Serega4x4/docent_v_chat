@@ -50,6 +50,6 @@ foreach ($timezones as $timezone) {
 
     // Поздравления с днём рождения
     Schedule::command("telegram:happy-birthday {$timezone}")
-        ->dailyAt('19:23')
+        ->dailyAt('22:30')
         ->timezone($timezone);
 }
