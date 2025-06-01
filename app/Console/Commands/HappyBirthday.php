@@ -21,10 +21,15 @@ class HappyBirthday extends Command
 
     public function handle()
     {
-        // Список Дней Рождения
+        $timezoneArg = $this->argument('timezone');
+
         $birthdays = config('birthdays');
 
         foreach ($birthdays as $birthday) {
+            if ($birthday['timezone'] !== $timezoneArg) {
+                continue;
+            }
+
             $now = Carbon::now($birthday['timezone'])->format('m-d');
 
             if ($now === $birthday['date']) {
