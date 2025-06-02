@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Telegram\Bot\Api;
 
-class VoiceCounterController extends Controller
+class VideoCounterController extends Controller
 {
     protected $telegram;
     protected string $counterFile;
@@ -12,7 +12,7 @@ class VoiceCounterController extends Controller
     public function __construct(Api $telegram)
     {
         $this->telegram = $telegram;
-        $this->counterFile = storage_path('app/voice_counter.txt');
+        $this->counterFile = storage_path('app/video_counter.txt');
     }
 
     private function getCount(): int
@@ -24,9 +24,9 @@ class VoiceCounterController extends Controller
         return (int) file_get_contents($this->counterFile);
     }
 
-    private function loadVoiceResponses(): array
+    private function loadVideoResponses(): array
     {
-        $filePath = storage_path('app/voice_responses.txt');
+        $filePath = storage_path('app/video_responses.txt');
 
         if (!file_exists($filePath)) {
             return [];
@@ -40,12 +40,12 @@ class VoiceCounterController extends Controller
         $count = $this->getCount();
         $count++;
 
-        $responses = $this->loadVoiceResponses();
+        $responses = $this->loadVideoResponses();
 
         file_put_contents($this->counterFile, $count);
 
         $response = empty($responses)
-            ? 'Сколько уже можно говорить!' 
+            ? 'Вот! Красавчик' 
             : $responses[array_rand($responses)];
 
         if ($count % 3 === 0) {

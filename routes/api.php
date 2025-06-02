@@ -13,6 +13,7 @@ use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 use App\Http\Controllers\VoiceCounterController;
 use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\VideoCounterController;
 
 Route::post('/telegram/webhook', function (Request $request) {
     $censorshipController = app(CensorshipController::class);
@@ -24,6 +25,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $keywordController = app(KeywordController::class);
     $stickerController = app(StickerController::class);
     $voiceCounterController = app(VoiceCounterController::class);
+    $videoCounterController = app(VideoCounterController::class);
     // $deleteController = app(DeleteController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
@@ -79,8 +81,7 @@ Route::post('/telegram/webhook', function (Request $request) {
         // }
     }
 
-    $update = $censorshipController->telegram->getWebhookUpdate();
-
+    // ответы на голосовые сообщения
     if (isset($update['message']['voice'])) {
         $chat_id = $update['message']['chat']['id'];
         $message_id = $update['message']['message_id'];
@@ -90,6 +91,18 @@ Route::post('/telegram/webhook', function (Request $request) {
         }
 
         return response()->json(['status' => 'voice_skipped']);
+    }
+
+    // ответы на видеокругляши
+    if (isset($update['message']['video_note'])) {
+        $chat_id = $update['message']['chat']['id'];
+        $message_id = $update['message']['message_id'];
+
+        if ($videoCounterController->handle($chat_id, $message_id)) {
+            return response()->json(['status' => 'video_reacted']);
+        }
+
+        return response()->json(['status' => 'video_note_skipped']);
     }
 
     return response()->json(['status' => 'ok']);
