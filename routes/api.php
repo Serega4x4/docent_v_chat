@@ -11,8 +11,8 @@ use App\Http\Controllers\StickerController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
+use App\Http\Controllers\VoiceCounterController;
 use App\Http\Controllers\DeleteController;
-
 
 Route::post('/telegram/webhook', function (Request $request) {
     $censorshipController = app(CensorshipController::class);
@@ -23,6 +23,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $wikiController = app(WikiController::class);
     $keywordController = app(KeywordController::class);
     $stickerController = app(StickerController::class);
+    $voiceCounterController = app(VoiceCounterController::class);
     // $deleteController = app(DeleteController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
@@ -78,6 +79,19 @@ Route::post('/telegram/webhook', function (Request $request) {
         // }
     }
 
+    $update = $censorshipController->telegram->getWebhookUpdate();
+
+    if (isset($update['message']['voice'])) {
+        $chat_id = $update['message']['chat']['id'];
+        $message_id = $update['message']['message_id'];
+
+        if ($voiceCounterController->handle($chat_id, $message_id)) {
+            return response()->json(['status' => 'voice_reacted']);
+        }
+
+        return response()->json(['status' => 'voice_skipped']);
+    }
+
     return response()->json(['status' => 'ok']);
 });
 
@@ -93,7 +107,7 @@ Route::get('/run-scheduler', function (Request $request) {
     return response('Scheduler executed');
 });
 
-    // проверка команд когда на бесплатном хостинге нет Schedule
+// проверка команд когда на бесплатном хостинге нет Schedule
 // Route::get('/run-artisan/{cmd}', function ($cmd) {
 //     Artisan::call($cmd);
 //     return 'Done: ' . $cmd;

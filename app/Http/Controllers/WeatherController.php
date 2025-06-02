@@ -63,10 +63,6 @@ class WeatherController extends BaseController
 
         $cities = $chatCities[$chat_id] ?? $this->cities;
 
-        // $service = $this->service->weather($chat_id, $message_text, $message_id, $this->cities, $this->telegram);
-
         return $this->service->weather($chat_id, $message_text, $message_id, $cities, $this->telegram);
-
-        // return $service
     }
 }
