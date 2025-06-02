@@ -11,8 +11,8 @@ use App\Http\Controllers\StickerController;
 use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
-use App\Http\Controllers\VoiceCounterController;
 use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\VoiceCounterController;
 use App\Http\Controllers\VideoCounterController;
 
 Route::post('/telegram/webhook', function (Request $request) {
@@ -24,9 +24,9 @@ Route::post('/telegram/webhook', function (Request $request) {
     $wikiController = app(WikiController::class);
     $keywordController = app(KeywordController::class);
     $stickerController = app(StickerController::class);
+    // $deleteController = app(DeleteController::class);
     $voiceCounterController = app(VoiceCounterController::class);
     $videoCounterController = app(VideoCounterController::class);
-    // $deleteController = app(DeleteController::class);
 
     $update = $censorshipController->telegram->getWebhookUpdate();
 
