@@ -22,7 +22,13 @@ class SendHello extends Command
     public function handle(): void
     {
         // общее приветствие
-        $chatIds = config('services.telegram.chat_id');
+        // $chatIds = config('services.telegram.chat_id');
+
+        $chatIds = [
+            config('services.telegram.chat_id_friend'), 
+            config('services.telegram.chat_id_parents'), 
+            config('services.telegram.chat_id_cousins'),
+        ];
 
         $message = 'Приветствую, Родня! Как спалось? Как настроение?'; // если только одно приветствие
 

@@ -27,7 +27,14 @@ class Friday extends Command
             return;
         }
 
-        $chatIds = config('services.telegram.chat_id');
+        // $chatIds = config('services.telegram.chat_id');
+
+        $chatIds = [
+            config('services.telegram.chat_id_friend'), 
+            config('services.telegram.chat_id_parents'), 
+            config('services.telegram.chat_id_cousins'),
+        ];
+
         $message = 'Ох, ПЯТНИЦА! Хорошо! За это можно и по рюмашечке!';
 
         foreach ($chatIds as $chatId) {

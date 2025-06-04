@@ -44,7 +44,13 @@ class SendDailyTelegramReport extends Command
 
     public function handle(): void
     {
-        $chatIds = config('services.telegram.chat_id');
+        // $chatIds = config('services.telegram.chat_id');
+
+        $chatIds = [
+            config('services.telegram.chat_id_friend'), 
+            config('services.telegram.chat_id_parents'), 
+            config('services.telegram.chat_id_cousins'),
+        ];
 
         $chatCities = [
             $chatIds[0] => $this->citiesFriends,

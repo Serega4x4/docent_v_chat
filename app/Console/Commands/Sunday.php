@@ -27,7 +27,14 @@ class Sunday extends Command
             return;
         }
 
-        $chatIds = config('services.telegram.chat_id');
+        // $chatIds = config('services.telegram.chat_id');
+
+        $chatIds = [
+            config('services.telegram.chat_id_friend'), 
+            config('services.telegram.chat_id_parents'), 
+            config('services.telegram.chat_id_cousins'),
+        ];
+        
         $message = 'Мне очень жаль, но завтра понедельник!';
 
         foreach ($chatIds as $chatId) {
