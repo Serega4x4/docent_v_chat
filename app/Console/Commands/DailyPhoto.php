@@ -20,15 +20,17 @@ class DailyPhoto extends Command
 
     public function handle(): void
     {
-        $chatIds = [
-            config('services.telegram.chat_id_friend'), 
-            // config('services.telegram.chat_id_parents'), 
-            // config('services.telegram.chat_id_cousins'),
-        ];
+        $chatId = config('services.telegram.chat_id_friend');
 
-        $data = json_decode(Storage::get('photos.json'), true);
-        $index = $data['index'];
-        $photos = $data['photos'];
+        $photos = app(\App\Services\GoogleDriveService::class)->listImages();
+
+        $indexFile = storage_path('app/photo_index.txt');
+
+        if (!file_exists($indexFile)) {
+            file_put_contents($indexFile, 0);
+        }
+
+        $index = (int) file_get_contents($indexFile);
 
         if (empty($photos)) {
             $this->error('Нет фото для отправки.');
@@ -37,22 +39,18 @@ class DailyPhoto extends Command
 
         $photo = $photos[$index];
 
-        foreach ($chatIds as $chatId) {
-            try {
-                $this->telegram->sendPhoto([
-                    'chat_id' => $chatId,
-                    'photo' => $photo,
-                    'caption' => 'Ежедневная фотка 😊',
-                ]);
-                $this->info("Фото отправлено в чат: $chatId");
-            } catch (\Exception $e) {
-                $this->error("Ошибка при отправке в $chatId: " . $e->getMessage());
-            }
+        try {
+            $this->telegram->sendPhoto([
+                'chat_id' => $chatId,
+                'photo' => $photo['url'],
+                'caption' => 'Ежедневная фотка 😊',
+            ]);
+            $this->info("Фото отправлено в чат: $chatId");
+        } catch (\Exception $e) {
+            $this->error("Ошибка при отправке в $chatId: " . $e->getMessage());
         }
 
-        // Увеличиваем индекс или сбрасываем
-        $data['index'] = ($index + 1) % count($photos);
-        Storage::put('photos.json', json_encode($data, JSON_PRETTY_PRINT));
+        file_put_contents($indexFile, ($index + 1) % count($photos));
 
         $this->info("Фото #$index успешно отправлено.");
     }

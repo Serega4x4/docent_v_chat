@@ -32,11 +32,13 @@ class GoogleDriveService
         $results = $this->service->files->listFiles($params);
 
         return collect($results->getFiles())
-            ->map(fn ($file) => [
-                'id' => $file->getId(),
-                'name' => $file->getName(),
-                'url' => "https://drive.google.com/uc?export=view&id=" . $file->getId(),
-            ])
+            ->map(
+                fn($file) => [
+                    'id' => $file->getId(),
+                    'name' => $file->getName(),
+                    'url' => 'https://drive.google.com/uc?export=view&id=' . $file->getId(),
+                ],
+            )
             ->toArray();
     }
 }
