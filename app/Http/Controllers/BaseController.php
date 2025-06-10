@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Service\Service;
+use App\Services\Service;
 
 class BaseController extends Controller
 {
