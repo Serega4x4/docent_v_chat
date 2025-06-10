@@ -14,7 +14,13 @@ class GoogleDriveService
     public function __construct()
     {
         $client = new Client();
-        $client->setAuthConfig(storage_path(env('GOOGLE_DRIVE_CREDENTIALS')));
+
+        $credentialsJson = env('GOOGLE_DRIVE_CREDENTIALS_JSON');
+        if (!$credentialsJson) {
+            throw new \RuntimeException('GOOGLE_DRIVE_CREDENTIALS_JSON не задан в .env');
+        }
+        
+        $client->setAuthConfig(json_decode($credentialsJson, true));
         $client->addScope(Drive::DRIVE_READONLY);
         $client->setAccessType('offline');
 
