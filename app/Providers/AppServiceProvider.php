@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (app()->environment('production')) {
+        $credentials = env('GOOGLE_DRIVE_CREDENTIALS_JSON');
+
+        if ($credentials) {
+            File::ensureDirectoryExists(storage_path('app/google'));
+            File::put(storage_path('app/google/credentials.json'), $credentials);
+        }
     }
 }
