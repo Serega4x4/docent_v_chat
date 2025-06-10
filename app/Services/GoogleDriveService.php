@@ -14,6 +14,7 @@ class GoogleDriveService
     {
         $client = new Client();
         $credentialsPath = env('GOOGLE_DRIVE_CREDENTIALS', '/etc/secrets/credentials.json');
+        Log::info("Права доступа к файлу $credentialsPath: " . (file_exists($credentialsPath) ? fileperms($credentialsPath) : 'файл не существует'));
 
         try {
             if (!file_exists($credentialsPath)) {
@@ -23,7 +24,7 @@ class GoogleDriveService
             $client->setAuthConfig($credentialsPath);
             Log::info("Учетные данные Google Drive успешно загружены: $credentialsPath");
         } catch (\Exception $e) {
-            Log::error("Ошибка загрузки учетных данных Google Drive: " . $e->getMessage());
+            Log::error('Ошибка загрузки учетных данных Google Drive: ' . $e->getMessage());
             throw $e;
         }
 
@@ -42,16 +43,18 @@ class GoogleDriveService
             ];
             $results = $this->service->files->listFiles($params);
             $files = collect($results->getFiles())
-                ->map(fn($file) => [
-                    'id' => $file->getId(),
-                    'name' => $file->getName(),
-                    'url' => 'https://drive.google.com/uc?export=view&id=' . $file->getId(),
-                ])
+                ->map(
+                    fn($file) => [
+                        'id' => $file->getId(),
+                        'name' => $file->getName(),
+                        'url' => 'https://drive.google.com/uc?export=view&id=' . $file->getId(),
+                    ],
+                )
                 ->toArray();
-            Log::info("Найдено изображений в Google Drive: " . count($files));
+            Log::info('Найдено изображений в Google Drive: ' . count($files));
             return $files;
         } catch (\Exception $e) {
-            Log::error("Ошибка получения изображений из Google Drive: " . $e->getMessage());
+            Log::error('Ошибка получения изображений из Google Drive: ' . $e->getMessage());
             return [];
         }
     }
