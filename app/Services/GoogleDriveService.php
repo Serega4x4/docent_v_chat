@@ -14,7 +14,8 @@ class GoogleDriveService
     public function __construct()
     {
         $client = new Client();
-        $client->setAuthConfig(storage_path(env('GOOGLE_DRIVE_CREDENTIALS')));
+        // $client->setAuthConfig(storage_path(env('GOOGLE_DRIVE_CREDENTIALS')));
+        $client->setAuthConfig(env('GOOGLE_DRIVE_CREDENTIALS'));
         $client->addScope(Drive::DRIVE_READONLY);
         $client->setAccessType('offline');
 
