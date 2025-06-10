@@ -14,13 +14,7 @@ class GoogleDriveService
     public function __construct()
     {
         $client = new Client();
-
-        $credentialsJson = env('GOOGLE_DRIVE_CREDENTIALS_JSON');
-        if (!$credentialsJson) {
-            throw new \RuntimeException('GOOGLE_DRIVE_CREDENTIALS_JSON не задан в .env');
-        }
-        
-        $client->setAuthConfig(json_decode($credentialsJson, true));
+        $client->setAuthConfig(storage_path(env('GOOGLE_DRIVE_CREDENTIALS')));
         $client->addScope(Drive::DRIVE_READONLY);
         $client->setAccessType('offline');
 
@@ -38,13 +32,11 @@ class GoogleDriveService
         $results = $this->service->files->listFiles($params);
 
         return collect($results->getFiles())
-            ->map(
-                fn($file) => [
-                    'id' => $file->getId(),
-                    'name' => $file->getName(),
-                    'url' => 'https://drive.google.com/uc?export=view&id=' . $file->getId(),
-                ],
-            )
+            ->map(fn ($file) => [
+                'id' => $file->getId(),
+                'name' => $file->getName(),
+                'url' => "https://drive.google.com/uc?export=view&id=" . $file->getId(),
+            ])
             ->toArray();
     }
 }
