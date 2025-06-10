@@ -1,10 +1,8 @@
 <?php
-
 namespace App\Services;
 
 use Google\Client;
 use Google\Service\Drive;
-use Google\Service\Drive\DriveFile;
 use Illuminate\Support\Facades\Log;
 
 class GoogleDriveService
@@ -15,13 +13,20 @@ class GoogleDriveService
     public function __construct()
     {
         $client = new Client();
+        $credentialsPath = env('GOOGLE_DRIVE_CREDENTIALS', '/etc/secrets/credentials.json');
+
         try {
-            $client->setAuthConfig(env('GOOGLE_DRIVE_CREDENTIALS'));
-            Log::info('Учетные данные Google Drive успешно загружены');
+            if (!file_exists($credentialsPath)) {
+                Log::error("Файл учетных данных не найден: $credentialsPath");
+                throw new \InvalidArgumentException("Файл учетных данных не найден: $credentialsPath");
+            }
+            $client->setAuthConfig($credentialsPath);
+            Log::info("Учетные данные Google Drive успешно загружены: $credentialsPath");
         } catch (\Exception $e) {
-            Log::error('Ошибка загрузки учетных данных Google Drive: ' . $e->getMessage());
+            Log::error("Ошибка загрузки учетных данных Google Drive: " . $e->getMessage());
             throw $e;
         }
+
         $client->addScope(Drive::DRIVE_READONLY);
         $client->setAccessType('offline');
         $this->service = new Drive($client);
@@ -30,21 +35,24 @@ class GoogleDriveService
 
     public function listImages(): array
     {
-        $params = [
-            'q' => "'{$this->folderId}' in parents and mimeType contains 'image/' and trashed = false",
-            'fields' => 'files(id, name)',
-        ];
-
-        $results = $this->service->files->listFiles($params);
-
-        return collect($results->getFiles())
-            ->map(
-                fn($file) => [
+        try {
+            $params = [
+                'q' => "'{$this->folderId}' in parents and mimeType contains 'image/' and trashed = false",
+                'fields' => 'files(id, name)',
+            ];
+            $results = $this->service->files->listFiles($params);
+            $files = collect($results->getFiles())
+                ->map(fn($file) => [
                     'id' => $file->getId(),
                     'name' => $file->getName(),
                     'url' => 'https://drive.google.com/uc?export=view&id=' . $file->getId(),
-                ],
-            )
-            ->toArray();
+                ])
+                ->toArray();
+            Log::info("Найдено изображений в Google Drive: " . count($files));
+            return $files;
+        } catch (\Exception $e) {
+            Log::error("Ошибка получения изображений из Google Drive: " . $e->getMessage());
+            return [];
+        }
     }
 }
