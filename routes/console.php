@@ -53,3 +53,7 @@ foreach ($timezones as $timezone) {
         ->dailyAt('08:00')
         ->timezone($timezone);
 }
+
+Schedule::command('telegram:daily-photo')
+    ->dailyAt('22:00')
+    ->timezone('Asia/Krasnoyarsk');
