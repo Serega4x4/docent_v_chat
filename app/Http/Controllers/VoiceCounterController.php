@@ -48,7 +48,7 @@ class VoiceCounterController extends Controller
             ? 'Сколько уже можно говорить!' 
             : $responses[array_rand($responses)];
 
-        if ($count % 3 === 0) {
+        if ($count % 5 === 0) {
             $this->telegram->sendMessage([
                 'chat_id' => $chat_id,
                 'text' => $response,
