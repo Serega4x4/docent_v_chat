@@ -24,7 +24,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $wikiController = app(WikiController::class);
     $keywordController = app(KeywordController::class);
     $stickerController = app(StickerController::class);
-    // $deleteController = app(DeleteController::class);
+    $deleteController = app(DeleteController::class);
     $voiceCounterController = app(VoiceCounterController::class);
     $videoCounterController = app(VideoCounterController::class);
 
@@ -41,9 +41,9 @@ Route::post('/telegram/webhook', function (Request $request) {
         }
 
         // Обработка приветствий
-        if ($greetingController->handle($chat_id, $message_text, $message_id)) {
-            return response()->json(['status' => 'greeted']);
-        }
+        // if ($greetingController->handle($chat_id, $message_text, $message_id)) {
+        //     return response()->json(['status' => 'greeted']);
+        // }
 
         // Обработка "валюта"
         if ($moneyController->handle($chat_id, $message_text, $message_id)) {
