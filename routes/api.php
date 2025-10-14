@@ -12,6 +12,7 @@ use App\Http\Controllers\WeatherController;
 use App\Http\Controllers\WeatherInCityController;
 use App\Http\Controllers\WikiController;
 use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\PikabuController;
 use App\Http\Controllers\VoiceCounterController;
 use App\Http\Controllers\VideoCounterController;
 
@@ -24,6 +25,7 @@ Route::post('/telegram/webhook', function (Request $request) {
     $wikiController = app(WikiController::class);
     $keywordController = app(KeywordController::class);
     $stickerController = app(StickerController::class);
+    $pikabuController = app(PikabuController::class);
     $deleteController = app(DeleteController::class);
     $voiceCounterController = app(VoiceCounterController::class);
     $videoCounterController = app(VideoCounterController::class);
@@ -67,6 +69,11 @@ Route::post('/telegram/webhook', function (Request $request) {
 
         // Обработка ключевых слов и ответ стикером
         if ($stickerController->handle($chat_id, $message_text, $message_id)) {
+            return response()->json(['status' => 'sticker']);
+        }
+
+        // Ответы на пикабу
+        if ($pikabuController->handle($chat_id, $message_text, $message_id)) {
             return response()->json(['status' => 'sticker']);
         }
 
