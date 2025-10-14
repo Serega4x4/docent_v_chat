@@ -15,5 +15,6 @@
 !voice_counter.txt
 !voice_responses.txt
 !video_responses.txt
+!response_for_pikabu.txt
 app/google/credentials.json
 !photo_index.txt
