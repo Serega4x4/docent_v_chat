@@ -18,3 +18,4 @@
 !response_for_pikabu.txt
 app/google/credentials.json
 !photo_index.txt
+!last_activity.json
