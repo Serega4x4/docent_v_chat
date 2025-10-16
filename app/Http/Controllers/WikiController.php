@@ -34,39 +34,40 @@ class WikiController extends Controller
     }
 
     private function searchWikipedia($keyword)
-{
-    try {
-        $keyword = mb_convert_case(mb_substr($keyword, 0, 1), MB_CASE_TITLE, "UTF-8") . mb_substr($keyword, 1);
-        $formattedKeyword = str_replace(' ', '_', $keyword);
+    {
+        try {
+            $keyword = mb_convert_case(mb_substr($keyword, 0, 1), MB_CASE_TITLE, 'UTF-8') . mb_substr($keyword, 1);
+            $formattedKeyword = str_replace(' ', '_', $keyword);
 
-        $response = Http::withHeaders([
-            'User-Agent' => 'ChatBotTelegram Docent',
-        ])->get('https://ru.wikipedia.org/w/api.php', [
-            'action' => 'query',
-            'format' => 'json',
-            'titles' => $formattedKeyword,
-            'prop' => 'extracts',
-            'exintro' => true,
-            'explaintext' => true,
-        ]);
+            $response = Http::withHeaders([
+                'User-Agent' => 'ChatBotTelegram Docent',
+            ])->get('https://ru.wikipedia.org/w/api.php', [
+                'action' => 'query',
+                'format' => 'json',
+                'titles' => $formattedKeyword,
+                'prop' => 'extracts',
+                'exintro' => true,
+                'explaintext' => true,
+                'redirects' => 1,
+            ]);
 
-        if ($response->ok()) {
-            $data = $response->json();
-            $pages = $data['query']['pages'] ?? null;
-            $page = reset($pages);
+            if ($response->ok()) {
+                $data = $response->json();
+                $pages = $data['query']['pages'] ?? null;
+                $page = reset($pages);
 
-            if ($page && isset($page['extract']) && !isset($page['missing'])) {
-                return $page['extract'];
-            } else {
-                return "Век воли не видать, делов не знаю что такое \"$keyword\"...";
+                if ($page && isset($page['extract']) && !isset($page['missing'])) {
+                    $extract = mb_substr($page['extract'], 0, 4000);
+                    return $extract ?: "Век воли не видать, делов не знаю что такое \"$keyword\"...";
+                } else {
+                    return "Век воли не видать, делов не знаю что такое \"$keyword\"...";
+                }
             }
+
+            // если не ок — покажем код ответа
+            return "Ошибка Википедии (код {$response->status()})";
+        } catch (\Exception $e) {
+            return 'Что-то я подзабыл совсем, спроси позже, обожди...';
         }
-
-        // если не ок — покажем код ответа
-        return "Ошибка Википедии (код {$response->status()}) 😕";
-    } catch (\Exception $e) {
-        return "Что-то я подзабыл совсем, спроси позже, обожди...";
     }
-}
-
 }
