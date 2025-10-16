@@ -36,6 +36,11 @@ class WikiController extends Controller
     private function searchWikipedia($keyword)
     {
         try {
+            $keyword = trim(preg_replace('/\s+/', ' ', $keyword));
+            if ($keyword === '') {
+                return 'Чего?';
+            }
+
             $keyword = mb_convert_case(mb_substr($keyword, 0, 1), MB_CASE_TITLE, 'UTF-8') . mb_substr($keyword, 1);
             $formattedKeyword = str_replace(' ', '_', $keyword);
 
@@ -51,22 +56,26 @@ class WikiController extends Controller
                 'redirects' => 1,
             ]);
 
-            if ($response->ok()) {
-                $data = $response->json();
-                $pages = $data['query']['pages'] ?? null;
-                $page = reset($pages);
-
-                if ($page && isset($page['extract']) && !isset($page['missing'])) {
-                    $extract = mb_substr($page['extract'], 0, 4000);
-                    return $extract ?: "Век воли не видать, делов не знаю что такое \"$keyword\"...";
-                } else {
-                    return "Век воли не видать, делов не знаю что такое \"$keyword\"...";
-                }
+            if (!$response->ok()) {
+                return "Ошибка Википедии (код {$response->status()})";
             }
 
-            // если не ок — покажем код ответа
-            return "Ошибка Википедии (код {$response->status()})";
+            $data = $response->json();
+            $pages = $data['query']['pages'] ?? null;
+            if (!$pages) {
+                return "Не нашёл ничего по \"$keyword\"...";
+            }
+
+            $page = reset($pages);
+
+            if (isset($page['extract']) && !empty(trim($page['extract']))) {
+                $extract = mb_substr($page['extract'], 0, 4000);
+                return $extract;
+            }
+
+            return "Век воли не видать, делов не знаю что такое \"$keyword\"...";
         } catch (\Exception $e) {
+            // \Log::error('Wiki search error', ['message' => $e->getMessage()]);
             return 'Что-то я подзабыл совсем, спроси позже, обожди...';
         }
     }
