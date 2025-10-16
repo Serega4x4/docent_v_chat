@@ -32,7 +32,7 @@ class CheckInactiveUsers extends Command
 
         foreach ($inactiveUsers as $user) {
             $text = "@{$user['username']}, что то ты давно уже молчишь!";
-            Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
+            $this->telegram->sendMessage([
                 'chat_id' => $chatId,
                 'text' => $text,
                 'parse_mode' => 'HTML',

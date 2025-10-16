@@ -34,36 +34,39 @@ class WikiController extends Controller
     }
 
     private function searchWikipedia($keyword)
-    {
-        try {
-            $keyword = mb_convert_case(mb_substr($keyword, 0, 1), MB_CASE_TITLE, "UTF-8") . mb_substr($keyword, 1);
-            $formattedKeyword = str_replace(' ', '_', $keyword);
+{
+    try {
+        $keyword = mb_convert_case(mb_substr($keyword, 0, 1), MB_CASE_TITLE, "UTF-8") . mb_substr($keyword, 1);
+        $formattedKeyword = str_replace(' ', '_', $keyword);
 
-            $response = Http::get('https://ru.wikipedia.org/w/api.php', [
-                'action' => 'query',
-                'format' => 'json',
-                'titles' => $formattedKeyword,
-                'prop' => 'extracts',
-                'exintro' => true,
-                'explaintext' => true,
-            ]);
+        $response = Http::withHeaders([
+            'User-Agent' => 'ChatBotTelegram Docent',
+        ])->get('https://ru.wikipedia.org/w/api.php', [
+            'action' => 'query',
+            'format' => 'json',
+            'titles' => $formattedKeyword,
+            'prop' => 'extracts',
+            'exintro' => true,
+            'explaintext' => true,
+        ]);
 
-            if ($response->ok()) {
-                $data = $response->json();
-                $pages = $data['query']['pages'] ?? null;
+        if ($response->ok()) {
+            $data = $response->json();
+            $pages = $data['query']['pages'] ?? null;
+            $page = reset($pages);
 
-                $page = reset($pages);
-
-                if ($page && isset($page['extract']) && !isset($page['missing'])) {
-                    return $page['extract'];
-                } else {
-                    return "Век воли не видать, делов не знаю что такое \"$keyword\"...";
-                }
+            if ($page && isset($page['extract']) && !isset($page['missing'])) {
+                return $page['extract'];
             } else {
-                return "Какая-то параша в Википедии...";
+                return "Век воли не видать, делов не знаю что такое \"$keyword\"...";
             }
-        } catch (\Exception $e) {
-            return "Что-то я подзабыл совсем, спроси позже, обожди...";
         }
+
+        // если не ок — покажем код ответа
+        return "Ошибка Википедии (код {$response->status()}) 😕";
+    } catch (\Exception $e) {
+        return "Что-то я подзабыл совсем, спроси позже, обожди...";
     }
+}
+
 }
