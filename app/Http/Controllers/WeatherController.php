@@ -38,6 +38,7 @@ class WeatherController extends BaseController
     private array $citiesCousisns = [
         'Высокий' => 'Megion',
         'Тюмень' => 'Tyumen',
+        'Сургут' => 'Surgut',
         'Нижние Серги' => 'Nizhniye Sergi',
         'Ченстохова' => 'Czestochowa',
         'Гютерсло' => 'Gutersloh',
