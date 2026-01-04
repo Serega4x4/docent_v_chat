@@ -28,6 +28,7 @@ class SendDailyTelegramReport extends Command
 
     private array $citiesCousisns = [
         'Высокий' => 'Megion',
+        'Сургут' => 'Surgut',
         'Тюмень' => 'Tyumen',
         'Нижние Серги' => 'Nizhniye Sergi',
         'Ченстохова' => 'Czestochowa',
